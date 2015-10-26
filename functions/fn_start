@@ -2,26 +2,16 @@
 # LGSM fn_start function
 # Author: Daniel Gibbs
 # Website: http://gameservermanagers.com
-# Version: 090515
+# Version: 150715
 
 # Description: Starts the server.
 
 local modulename="Starting"
 
 fn_start_teamspeak3(){
-# Create any missing log dirs
-if [ ! -d "${scriptlogdir}" ];then
-	mkdir "${rootdir}/log"
-	mkdir "${scriptlogdir}"
-	fn_printinfo  "Creating log directorys ${scriptlogdir}"
-	fn_scriptlog "Creating log directorys ${scriptlogdir}"
-fi
-if [ ! -h "${rootdir}/log/server" ]; then
-	ln -sv "${gamelogdir} ${rootdir}/log/server"
-fi
-
 fn_check_root
 fn_check_systemdir
+fn_check_logs
 fn_check_ts3status
 if [ "${ts3status}" = "Server is running" ]; then
 	fn_printinfo "${servername} is already running"
@@ -33,19 +23,23 @@ fi
 if [ ! -e "${servercfgfullpath}" ]; then
 	fn_printwarn "${servercfgfullpath} is missing"
 	fn_scriptlog "${servercfgfullpath} is missing"
-	sleep 1
-	fn_printinfo "Creating blank ${servercfgfullpath}"
-	fn_scriptlog "Creating blank ${servercfgfullpath}"
-	sleep 1
-	fn_printinfo "${servercfgfullpath} can remain blank by default."
+	sleep 2
+	echo -en "\n"
+	echo  "	* Creating blank ${servercfg}"
+	fn_scriptlog "Creating blank ${servercfg}"
+	sleep 2
+	echo  "	* ${servercfg} can remain blank by default."
 	fn_scriptlog "${servercfgfullpath} can remain blank by default."
-	sleep 1
+	sleep 2
+	echo  "	* ${servercfg} is located in ${servercfgfullpath}."
+	fn_scriptlog "${servercfg} is located in ${servercfgfullpath}."
+	sleep 5
 	touch "${servercfgfullpath}"
 fi
 fn_logs
 
 # Will check for updates is updateonstart is yes
-if [ "${updateonstart}" == "yes" ]||[ "${updateonstart}" == "1" ]; then
+if [ "${updateonstart}" == "yes" ]||[ "${updateonstart}" == "1" ]||[ "${updateonstart}" == "on" ]; then
 	fn_update_check
 fi
 
@@ -90,7 +84,15 @@ fn_printdots "${servername}"
 fn_scriptlog "${servername}"
 sleep 1
 fn_check_tmux
-fn_check_steamcmd
+if [ "${gamename}" != "Mumble" ]; then
+	fn_check_steamcmd
+fi
+
+# Will check for updates if updateonstart is yes
+if [ "${updateonstart}" == "yes" ]||[ "${updateonstart}" == "1" ]; then
+	fn_update_check
+fi
+
 tmuxwc=$(tmux list-sessions 2>&1|awk '{print $1}'|grep -v failed|grep -Ec "^${servicename}:")
 if [ "${tmuxwc}" -eq 0 ]; then
 	fn_scriptlog "Rotating log files"
@@ -109,15 +111,10 @@ if [ "${tmuxwc}" -eq 1 ]; then
 	exit
 fi
 
-# Will check for updates is updateonstart is yes
-if [ "${updateonstart}" == "yes" ]||[ "${updateonstart}" == "1" ]; then
-	fn_update_check
-fi
-
 # Create lock file
 date > "${rootdir}/${lockselfname}"
 cd "${executabledir}"
-tmux new-session -d -s ${servicename} "${executable} ${parms}" 2> "${scriptlogdir}/.${servicename}-tmux-error.tmp"
+tmux new-session -d -s "${servicename}" "${executable} ${parms}" 2> "${scriptlogdir}/.${servicename}-tmux-error.tmp"
 # tmux pipe-pane not supported in tmux versions < 1.6
 if [ "$(tmux -V|sed "s/tmux //"|sed -n '1 p'|tr -cd [:digit:])" -lt "16" ]; then
 	echo "Console logging disabled: Tmux => 1.6 required" >> "${consolelog}"
@@ -127,7 +124,7 @@ elif [ "$(tmux -V|sed "s/tmux //"|sed -n '1 p'|tr -cd [:digit:])" -eq "18" ]; th
 	echo "Currently installed: $(tmux -V)" >> "${consolelog}"
 else
 	touch "${consolelog}"
-	tmux pipe-pane -o -t ${servicename} "exec cat >> '${consolelog}'"
+	tmux pipe-pane -o -t "${servicename}" "exec cat >> '${consolelog}'"
 fi
 sleep 1
 tmuxwc=$(tmux list-sessions 2>&1|awk '{print $1}'|grep -Ec "^${servicename}:")
@@ -144,8 +141,8 @@ if [ "${tmuxwc}" -eq 0 ]; then
 		echo ""
 		echo "Command"
 		echo "================================="
-		echo "tmux new-session -d -s ${servicename} "${executable} ${parms}""
-		echo "tmux new-session -d -s ${servicename} "${executable} ${parms}"" >> "${scriptlog}"
+		echo "tmux new-session -d -s \"${servicename}\" \"${executable} ${parms}\""
+		echo "tmux new-session -d -s \"${servicename}\" \"${executable} ${parms}\"" >> "${scriptlog}"
 		echo ""
 		echo "Error"
 		echo "================================="

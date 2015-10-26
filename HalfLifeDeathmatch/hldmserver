@@ -3,7 +3,7 @@
 # Server Management Script
 # Author: Daniel Gibbs
 # Website: http://gameservermanagers.com
-# Version: 090515
+version="040715"
 
 #### Variables ####
 
@@ -22,7 +22,7 @@ maxplayers="16"
 port="27015"
 clientport="27005"
 ip="0.0.0.0"
-updateonstart="no"
+updateonstart="off"
 
 # https://developer.valvesoftware.com/wiki/Command_Line_Options#Command-line_parameters_2
 fn_parms(){
@@ -47,10 +47,10 @@ filesdir="${rootdir}/serverfiles"
 systemdir="${filesdir}/valve"
 executabledir="${filesdir}"
 executable="./hlds_run"
-servercfgdir="${systemdir}"
 servercfg="${servicename}.cfg"
+servercfgdir="${systemdir}"
 servercfgfullpath="${servercfgdir}/${servercfg}"
-defaultcfg="${servercfgdir}/server.cfg"
+servercfgdefault="${servercfgdir}/server.cfg"
 backupdir="${rootdir}/backups"
 
 # Logging
@@ -77,7 +77,7 @@ if [ ! -f "${rootdir}/functions/${functionfile}" ]; then
 		mkdir functions
 	fi
 	cd functions
-	echo -e "loading ${functionfile}...\c"
+	echo -e "    loading ${functionfile}...\c"
 	wget -N /dev/null https://raw.githubusercontent.com/dgibbs64/linuxgsm/master/functions/${functionfile} 2>&1 | grep -F HTTP | cut -c45-
 	chmod +x "${functionfile}"
 	cd "${rootdir}"

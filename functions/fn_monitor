@@ -2,7 +2,7 @@
 # LGSM fn_monitor function
 # Author: Daniel Gibbs
 # Website: http://gameservermanagers.com
-# Version: 230315
+# Version: 150815
 
 # Description: Monitors server by checking for running proccesses
 # then passes to fn_monitor_query.
@@ -16,7 +16,7 @@ fn_logs
 fn_printdots "${servername}"
 fn_scriptlog "${servername}"
 sleep 1
-if [ ! -f "${lockselfname}" ]; then
+if [ ! -f "${rootdir}/${lockselfname}" ]; then
 	fn_printinfo "Disabled: No lock file found"
 	fn_scriptlog "Disabled: No lock file found"
 	sleep 1
@@ -61,7 +61,7 @@ fn_details_config
 fn_printdots "${servername}"
 fn_scriptlog "${servername}"
 sleep 1
-if [ ! -f "${lockselfname}" ]; then
+if [ ! -f "${rootdir}/${lockselfname}" ]; then
 	fn_printinfo "Disabled: No lock file found"
 	fn_scriptlog "Disabled: No lock file found"
 	sleep 1
@@ -69,7 +69,6 @@ if [ ! -f "${lockselfname}" ]; then
 	echo "To enable monitor run ./${selfname} start"
 	exit
 fi
-
 
 updatecheck=$(ps -ef|grep "${selfname} update"|grep -v grep|wc -l)
 if [ "${updatecheck}" = "0" ]||[ "${gamename}" == "Unreal Tournament 99" ]||[ "${gamename}" == "Unreal Tournament 2004" ]; then
@@ -82,7 +81,10 @@ if [ "${updatecheck}" = "0" ]||[ "${gamename}" == "Unreal Tournament 99" ]||[ "$
 		fn_scriptlog "Checking session: OK"
 		sleep 1
 		echo -en "\n"
-		fn_monitor_query
+
+		if [ "${engine}" == "avalanche" ]||[ "${engine}" == "goldsource" ]||[ "${engine}" == "realvirtuality" ]||[ "${engine}" == "source" ]||[ "${engine}" == "spark" ]||[ "${engine}" == "unity3d" ]||[ "${engine}" == "unreal" ]||[ "${engine}" == "unreal2" ]; then
+			fn_monitor_query
+		fi
 		exit
 	else
 		fn_printfail "Checking session: FAIL"

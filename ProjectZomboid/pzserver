@@ -2,8 +2,9 @@
 # Project Zomboid
 # Server Management Script
 # Author: Daniel Gibbs
+# Contributions: Bryce Van Dyk (SingingTree)
 # Website: http://gameservermanagers.com
-# Version: 090515
+version="031015"
 
 #### Variables ####
 
@@ -13,12 +14,12 @@ emailnotification="off"
 email="email@example.com"
 
 # Steam login
-steamuser="anonymous"
-steampass=""
+steamuser="username"
+steampass="password"
 
 # Start Variables
 ip="0.0.0.0"
-updateonstart="no"
+updateonstart="off"
 
 fn_parms(){
 parms=""
@@ -27,7 +28,7 @@ parms=""
 #### Advanced Variables ####
 
 # Steam
-appid="108600"
+appid="380870"
 
 # Server Details
 servicename="pz-server"
@@ -39,13 +40,12 @@ rootdir="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 selfname="$(basename $0)"
 lockselfname=".${servicename}.lock"
 filesdir="${rootdir}/serverfiles"
-systemdir="${filesdir}/projectzomboid"
+systemdir="${filesdir}"
 executabledir="${filesdir}"
-executable="./projectzomboid-dedi-server.sh"
-servercfgdir="${rootdir}/Zomboid/Server"
+executable="./start-server.sh"
 servercfg="servertest.ini"
+servercfgdir="${HOME}/Zomboid/Server"
 servercfgfullpath="${servercfgdir}/${servercfg}"
-defaultcfg="${servercfgdir}/servertest.ini"
 backupdir="${rootdir}/backups"
 
 # Logging
@@ -72,11 +72,10 @@ if [ ! -f "${rootdir}/functions/${functionfile}" ]; then
 		mkdir functions
 	fi
 	cd functions
-	echo -e "loading ${functionfile}...\c"
+	echo -e "    loading ${functionfile}...\c"
 	wget -N /dev/null https://raw.githubusercontent.com/dgibbs64/linuxgsm/master/functions/${functionfile} 2>&1 | grep -F HTTP | cut -c45-
 	chmod +x "${functionfile}"
 	cd "${rootdir}"
-	sleep 1
 fi
 source "${rootdir}/functions/${functionfile}"
 }

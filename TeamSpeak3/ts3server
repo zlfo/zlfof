@@ -3,7 +3,7 @@
 # Server Management Script
 # Author: Daniel Gibbs
 # Website: http://gameservermanagers.com
-# Version: 090515
+version="040715"
 
 #### Variables ####
 
@@ -13,7 +13,7 @@ emailnotification="off"
 email="email@example.com"
 
 # Start Variables
-updateonstart="no"
+updateonstart="off"
 
 # Server Details
 gamename="Teamspeak 3"
@@ -28,10 +28,9 @@ filesdir="${rootdir}/serverfiles"
 systemdir="${filesdir}"
 executabledir="${filesdir}"
 executable="./ts3server_startscript.sh"
-servercfgdir="${filesdir}"
 servercfg="${servicename}.ini"
+servercfgdir="${filesdir}"
 servercfgfullpath="${servercfgdir}/${servercfg}"
-defaultcfg="${servercfgfullpath}" #
 backupdir="${rootdir}/backups"
 
 # Logging
@@ -55,11 +54,10 @@ if [ ! -f "${rootdir}/functions/${functionfile}" ]; then
 		mkdir functions
 	fi
 	cd functions
-	echo -e "loading ${functionfile}...\c"
+	echo -e "    loading ${functionfile}...\c"
 	wget -N /dev/null https://raw.githubusercontent.com/dgibbs64/linuxgsm/master/functions/${functionfile} 2>&1 | grep -F HTTP | cut -c45-
 	chmod +x "${functionfile}"
 	cd "${rootdir}"
-	sleep 1
 fi
 source "${rootdir}/functions/${functionfile}"
 }

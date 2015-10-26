@@ -3,7 +3,7 @@
 # Server Management Script
 # Author: Daniel Gibbs
 # Website: http://gameservermanagers.com
-# Version: 090515
+version="040715"
 
 #### Variables ####
 
@@ -18,11 +18,11 @@ steampass="password"
 
 # Start Variables
 ip="0.0.0.0"
-updateonstart="no"
+updateonstart="off"
 
 # http://7daystodie.gamepedia.com/Server
 fn_parms(){
-parms="-configfile=\"${servercfgfullpath}\" -dedicated"
+parms="-configfile=${servercfgfullpath} -dedicated"
 }
 
 #### Advanced Variables ####
@@ -42,11 +42,11 @@ lockselfname=".${servicename}.lock"
 filesdir="${rootdir}/serverfiles"
 systemdir="${filesdir}"
 executabledir="${filesdir}"
-executable="./7DaysToDie.sh"
-servercfgdir="${filesdir}"
+executable="./startserver.sh"
 servercfg="${servicename}.xml"
+servercfgdir="${filesdir}"
 servercfgfullpath="${servercfgdir}/${servercfg}"
-defaultcfg="${filesdir}/serverconfig.xml"
+servercfgdefault="${servercfgdir}/serverconfig.xml"
 backupdir="${rootdir}/backups"
 
 # Logging
@@ -74,11 +74,10 @@ if [ ! -f "${rootdir}/functions/${functionfile}" ]; then
 		mkdir functions
 	fi
 	cd functions
-	echo -e "loading ${functionfile}...\c"
+	echo -e "    loading ${functionfile}...\c"
 	wget -N /dev/null https://raw.githubusercontent.com/dgibbs64/linuxgsm/master/functions/${functionfile} 2>&1 | grep -F HTTP | cut -c45-
 	chmod +x "${functionfile}"
 	cd "${rootdir}"
-	sleep 1
 fi
 source "${rootdir}/functions/${functionfile}"
 }

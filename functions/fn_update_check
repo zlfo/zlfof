@@ -2,7 +2,7 @@
 # LGSM fn_update_check function
 # Author: Daniel Gibbs
 # Website: http://gameservermanagers.com
-# Version: 080515
+# Version: 030615
 
 # Description: Checks if a server update is available.
 
@@ -53,6 +53,12 @@ if [ "${appmanifestfilewc}" -ge "2" ]; then
 		fn_update_check
 	fi
 elif [ "${appmanifestfilewc}" -eq "0" ]; then
+	if [ "${forceupdate}" -eq "1" ]; then
+		fn_printfail "Still no appmanifest_${appid}.acf found: Unable to update"
+		fn_scriptlog "Warning! Still no appmanifest_${appid}.acf found: Unable to update"
+		exit
+	fi
+	forceupdate=1
 	fn_printwarn "No appmanifest_${appid}.acf found"
 	fn_scriptlog "Warning! No appmanifest_${appid}.acf found"
 	sleep 2
@@ -66,16 +72,12 @@ fi
 
 fn_logupdaterequest(){
 # Checks for server update requests from server logs.
-echo ""
 fn_printdots "Checking for update: Server logs"
-sleep 1
-fn_printok "Checking for update: Server logs"
 fn_scriptlog "Checking for update: Server logs"
 sleep 1
 requestrestart=$(grep -Ec "MasterRequestRestart" "${consolelog}")
-echo "${requestrestart}"
 if [ "${requestrestart}" -ge "1" ]; then
-	fn_printoknl "Server requesting update"
+	fn_printoknl "Checking for update: Server logs: Update requested"
 	sleep 1
 	echo ""
 	echo -ne "Applying update.\r"
@@ -97,10 +99,11 @@ else
 	fn_printok "Checking for update: Server logs: No update requested"
 	sleep 1
 fi
-echo ""
 }
 
 fn_steamcmdcheck(){
+fn_check_steamcmd
+fn_check_steamuser
 fn_appmanifestcheck
 # Checks for server update from SteamCMD
 fn_printdots "Checking for update: SteamCMD"
@@ -112,6 +115,12 @@ currentbuild=$(grep buildid "${appmanifestfile}" | tr '[:blank:]"' ' ' | tr -s '
 
 # Gets availablebuild info
 cd "${rootdir}/steamcmd"
+
+# Removes appinfo.vdf as a fix for not always getting up to date version info from SteamCMD
+
+if [ -f "${rootdir}/Steam/appcache/appinfo.vdf" ]; then
+	rm -f "${rootdir}/Steam/appcache/appinfo.vdf"
+fi
 availablebuild=$(./steamcmd.sh +login "${steamuser}" "${steampass}" +app_info_update 1 +app_info_print "${appid}" +app_info_print "${appid}" +quit | grep -EA 1000 "^\s+\"branches\"$" | grep -EA 5 "^\s+\"public\"$" | grep -m 1 -EB 10 "^\s+}$" | grep -E "^\s+\"buildid\"\s+" | tr '[:blank:]"' ' ' | tr -s ' ' | cut -d\  -f3)
 if [ -z "${availablebuild}" ]; then
 	fn_printfail "Checking for update: SteamCMD"
@@ -120,6 +129,7 @@ if [ -z "${availablebuild}" ]; then
 	fn_printfail "Checking for update: SteamCMD: Not returning version info"
 	fn_scriptlog "Failure! Checking for update: SteamCMD: Not returning version info"
 	sleep 2
+	exit
 else
 	fn_printok "Checking for update: SteamCMD"
 	fn_scriptlog "Success! Checking for update: SteamCMD"
@@ -189,7 +199,8 @@ if [ -z "$(find ./* -name 'ts3server*_0.log')" ]; then
 	fn_printinfonl "Checking for update: teamspeak.com: Forcing server restart"
 	fn_scriptlog "Checking for update: teamspeak.com: Forcing server restart"
 	sleep 2
-	./${selfname} restart
+	fn_stop
+	fn_start
 	sleep 2
 	# If still failing will exit
 	if [ -z "$(find ./* -name 'ts3server*_0.log')" ]; then
@@ -209,7 +220,7 @@ ts3arch=$(ls $(find ${filesdir}/ -name 'ts3server_*_*' 2> /dev/null | grep -v 't
 wget "http://dl.4players.de/ts/releases/?C=M;O=D" -q -O -| grep -i dir | egrep -o '<a href=\".*\/\">.*\/<\/a>' | egrep -o '[0-9\.?]+'|uniq > .ts3_version_numbers_unsorted.tmp
 
 # removes digits to allow sorting of numbers
-cat .ts3_version_numbers_unsort.tmp |tr -cd "[:digit:][*\n]" > .ts3_version_numbers_digit.tmp
+cat .ts3_version_numbers_unsorted.tmp |tr -cd "[:digit:][*\n]" > .ts3_version_numbers_digit.tmp
 # Sorts numbers in to correct order
 # merges two files in to one with two columns sorts the numbers in to order then only outputs the second to the ts3_version_numbers.tmp
 paste .ts3_version_numbers_digit.tmp .ts3_version_numbers_unsorted.tmp |sort -rn|awk '{ print $2 }' > .ts3_version_numbers.tmp
@@ -220,7 +231,6 @@ while read ts3_version_number; do
 	if [[ $? == 0 ]]; then
 		availablebuild="${ts3_version_number}"
 		# Break while-loop, if the latest release could be found
-		echo "http://dl.4players.de/ts/releases/${ts3_version_number}/teamspeak3-server_linux-${ts3arch}-${ts3_version_number}.tar.g"
 		break
 	fi
 done < .ts3_version_numbers.tmp
@@ -266,9 +276,17 @@ if [ "${currentbuilddigit}" -ne "${availablebuilddigit}" ]; then
 	fn_scriptlog "Current build: ${currentbuild}"
 	fn_scriptlog "Available build: ${availablebuild}"
 	fn_scriptlog "${currentbuild} > ${availablebuild}"
-	fn_stop
-	fn_update_dl
-	fn_start
+	fn_check_ts3status
+	if [ "${ts3status}" = "No server running (ts3server.pid is missing)" ];then
+		fn_update_dl
+		fn_start
+		sleep 5
+		fn_stop
+	else
+		fn_stop
+		fn_update_dl
+		fn_start
+	fi
 else
 	echo -e "\n"
 	echo -e "No update available:"
@@ -281,6 +299,7 @@ else
 fi
 }
 
+fn_check_logs
 fn_printdots "Checking for update"
 if [ "${gamename}" == "Teamspeak 3" ]; then
 	fn_teamspeak3_check

@@ -3,7 +3,7 @@
 # Server Management Script
 # Author: Daniel Gibbs
 # Website: http://gameservermanagers.com
-# Version: 030515
+version="040715"
 
 #### Variables ####
 
@@ -35,11 +35,11 @@ filesdir="${rootdir}/serverfiles"
 systemdir="${filesdir}/System"
 executabledir="${systemdir}"
 executable="./ucc-bin"
-servercfgdir="${systemdir}"
 servercfg="${servicename}.ini"
+servercfgdir="${systemdir}"
 servercfgfullpath="${servercfgdir}/${servercfg}"
+servercfgdefault="${servercfgdir}/Default.ini"
 compressedmapsdir="${rootdir}/Maps-Compressed"
-defaultcfg="${systemdir}/Default.ini"
 backupdir="${rootdir}/backups"
 
 # Logging
@@ -65,11 +65,10 @@ if [ ! -f "${rootdir}/functions/${functionfile}" ]; then
 		mkdir functions
 	fi
 	cd functions
-	echo -e "loading ${functionfile}...\c"
+	echo -e "    loading ${functionfile}...\c"
 	wget -N /dev/null https://raw.githubusercontent.com/dgibbs64/linuxgsm/master/functions/${functionfile} 2>&1 | grep -F HTTP | cut -c45-
 	chmod +x "${functionfile}"
 	cd "${rootdir}"
-	sleep 1
 fi
 source "${rootdir}/functions/${functionfile}"
 }

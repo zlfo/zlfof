@@ -4,7 +4,7 @@
 # Author: Daniel Gibbs
 # Contributor: Summit Singh Thakur
 # Website: http://gameservermanagers.com
-# Version: 090515
+version="040715"
 
 #### Variables ####
 
@@ -23,11 +23,11 @@ maxplayers="8"
 port="27015"
 clientport="27005"
 ip="0.0.0.0"
-updateonstart="no"
+updateonstart="off"
 
 # https://developer.valvesoftware.com/wiki/Command_Line_Options#Source_Dedicated_Server
 fn_parms(){
-parms="-game left4dead -strictportbind -ip ${ip} -port ${port} +clientport ${clientport} -tickrate ${tickrate} +map ${defaultmap} +servercfgfile ${servercfg} -maxplayers ${maxplayers}"
+parms="-game left4dead -strictportbind -ip ${ip} -port ${port} +clientport ${clientport} -tickrate ${tickrate} +map ${defaultmap} -maxplayers ${maxplayers}"
 }
 
 #### Advanced Variables ####
@@ -48,10 +48,10 @@ filesdir="${rootdir}/serverfiles"
 systemdir="${filesdir}/left4dead"
 executabledir="${filesdir}"
 executable="./srcds_run"
-servercfgdir="${systemdir}/cfg"
 servercfg="${servicename}.cfg"
+servercfgdir="${systemdir}/cfg"
 servercfgfullpath="${servercfgdir}/${servercfg}"
-defaultcfg="${servercfgdir}/server.cfg"
+servercfgdefault="${servercfgdir}/server.cfg"
 backupdir="${rootdir}/backups"
 
 # Logging
@@ -78,11 +78,10 @@ if [ ! -f "${rootdir}/functions/${functionfile}" ]; then
 		mkdir functions
 	fi
 	cd functions
-	echo -e "loading ${functionfile}...\c"
+	echo -e "    loading ${functionfile}...\c"
 	wget -N /dev/null https://raw.githubusercontent.com/dgibbs64/linuxgsm/master/functions/${functionfile} 2>&1 | grep -F HTTP | cut -c45-
 	chmod +x "${functionfile}"
 	cd "${rootdir}"
-	sleep 1
 fi
 source "${rootdir}/functions/${functionfile}"
 }

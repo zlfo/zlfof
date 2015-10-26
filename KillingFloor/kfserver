@@ -3,7 +3,7 @@
 # Server Management Script
 # Author: Daniel Gibbs
 # Website: http://gameservermanagers.com
-# Version: 090515
+version="040715"
 
 #### Variables ####
 
@@ -19,7 +19,7 @@ steampass="password"
 # Start Variables
 defaultmap="KF-BioticsLab.rom"
 ip="0.0.0.0"
-updateonstart="no"
+updateonstart="off"
 
 fn_parms(){
 parms="server ${defaultmap}?game=KFmod.KFGameType?VACSecured=true -nohomedir ini=${servercfg} log=${gamelog}"
@@ -31,13 +31,13 @@ parms="server ${defaultmap}?game=KFmod.KFGameType?VACSecured=true -nohomedir ini
 
 #### Advanced Variables ####
 
+# Steam
+appid="215360"
+
 # Server Details
 servicename="kf-server"
 gamename="Killing Floor"
 engine="unreal2"
-
-# Steam
-appid="215360"
 
 # Directories
 rootdir="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
@@ -47,11 +47,11 @@ filesdir="${rootdir}/serverfiles"
 systemdir="${filesdir}/System"
 executabledir="${systemdir}"
 executable="./ucc-bin"
-servercfgdir="${systemdir}"
 servercfg="${servicename}.ini"
+servercfgdir="${systemdir}"
 servercfgfullpath="${servercfgdir}/${servercfg}"
+servercfgdefault="${servercfgdir}/Default.ini"
 compressedmapsdir="${rootdir}/Maps-Compressed"
-defaultcfg="${systemdir}/Default.ini"
 backupdir="${rootdir}/backups"
 
 # Logging
@@ -80,11 +80,10 @@ if [ ! -f "${rootdir}/functions/${functionfile}" ]; then
 		mkdir functions
 	fi
 	cd functions
-	echo -e "loading ${functionfile}...\c"
+	echo -e "    loading ${functionfile}...\c"
 	wget -N /dev/null https://raw.githubusercontent.com/dgibbs64/linuxgsm/master/functions/${functionfile} 2>&1 | grep -F HTTP | cut -c45-
 	chmod +x "${functionfile}"
 	cd "${rootdir}"
-	sleep 1
 fi
 source "${rootdir}/functions/${functionfile}"
 }
