@@ -1,9 +1,9 @@
 #!/bin/bash
-# Ricochet
+# No More Room in Hell
 # Server Management Script
 # Author: Daniel Gibbs
 # Website: http://gameservermanagers.com
-version="291015"
+version="051115"
 
 #### Variables ####
 
@@ -17,39 +17,39 @@ steamuser="anonymous"
 steampass=""
 
 # Start Variables
-defaultmap="rc_arena"
-maxplayers="16"
+defaultmap="bt_island"
+maxplayers="24"
 port="27015"
+sourcetvport="27020"
 clientport="27005"
 ip="0.0.0.0"
 updateonstart="off"
 
-# https://developer.valvesoftware.com/wiki/Command_Line_Options#Command-line_parameters_2
+# https://developer.valvesoftware.com/wiki/Command_Line_Options#Source_Dedicated_Server
 fn_parms(){
-parms="-game ricochet -strictportbind -ip ${ip} -port ${port} +clientport ${clientport} +map ${defaultmap} -maxplayers ${maxplayers}"
+parms="-game pvkii -strictportbind -ip ${ip} -port ${port} +clientport ${clientport} +tv_port ${sourcetvport} +map ${defaultmap} +servercfgfile ${servercfg} -maxplayers ${maxplayers}"
 }
 
 #### Advanced Variables ####
 
 # Steam
-appid="90"
-appidmod="ricochet"
+appid="17575"
 
 # Server Details
-servicename="ricochet-server"
-gamename="Ricochet"
-engine="goldsource"
+servicename="pvkii-server"
+gamename="Pirates, Vikings, and Knights II"
+engine="source"
 
 # Directories
 rootdir="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 selfname="$(basename $0)"
 lockselfname=".${servicename}.lock"
 filesdir="${rootdir}/serverfiles"
-systemdir="${filesdir}/ricochet"
+systemdir="${filesdir}/pvkii"
 executabledir="${filesdir}"
-executable="./hlds_run"
+executable="./srcds_run"
 servercfg="${servicename}.cfg"
-servercfgdir="${systemdir}"
+servercfgdir="${systemdir}/cfg"
 servercfgfullpath="${servercfgdir}/${servercfg}"
 servercfgdefault="${servercfgdir}/lgsm-default.cfg"
 backupdir="${rootdir}/backups"

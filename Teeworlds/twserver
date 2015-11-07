@@ -1,10 +1,10 @@
 #!/bin/bash
-# Terraria
+# Teeworlds
 # Server Management Script
 # Author: Daniel Gibbs
 # Contributor: Bryce Van Dyk (SingingTree)
 # Website: http://gameservermanagers.com
-version="141015"
+version="281015"
 
 #### Variables ####
 
@@ -46,21 +46,23 @@ executable="./teeworlds_srv"
 servercfg="${servicename}.cfg" # Teeworlds can also auto load any config if an autoexec.cfg file is present in the server dir
 servercfgdir="${filesdir}"
 servercfgfullpath="${servercfgdir}/${servercfg}"
+servercfgdefault="${servercfgdir}/lgsm-default.cfg"
 backupdir="${rootdir}/backups"
 
 # Logging
 logdays="7"
-#gamelogdir="" # Teeworlds has a configurable logfile location, use 'logfile' in server.cfg
+gamelogdir="${rootdir}/log/server"
 scriptlogdir="${rootdir}/log/script"
 consolelogdir="${rootdir}/log/console"
 
+gamelog="${gamelogdir}/${servicename}-game.log"
 scriptlog="${scriptlogdir}/${servicename}-script.log"
 consolelog="${consolelogdir}/${servicename}-console.log"
 emaillog="${scriptlogdir}/${servicename}-email.log"
 
 scriptlogdate="${scriptlogdir}/${servicename}-script-$(date '+%d-%m-%Y-%H-%M-%S').log"
 consolelogdate="${consolelogdir}/${servicename}-console-$(date '+%d-%m-%Y-%H-%M-%S').log"
-
+ 
 ##### Script #####
 # Do not edit
 
