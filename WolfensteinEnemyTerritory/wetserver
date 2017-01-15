@@ -95,7 +95,11 @@ filesdir="${rootdir}/serverfiles"
 ## Server Specific Directories
 systemdir="${filesdir}"
 executabledir="${systemdir}"
-executable="./etded"
+if [ "${serverbuild}" == "etlegacy" ]; then
+	executable="./etlded"
+else
+	executable="./etded"
+fi	
 servercfg="${servicename}.cfg"
 servercfgdefault="server.cfg"
 servercfgdir="${systemdir}/etmain"
