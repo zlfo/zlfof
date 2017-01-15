@@ -38,7 +38,11 @@ fn_install_server_files(){
 	elif [ "${gamename}" == "Unreal Tournament 3" ]; then
 		fileurl="http://files.gameservermanagers.com/UnrealTournament3/UT3-linux-server-2.1.tar.bz2"; filedir="${tmpdir}"; filename="UT3-linux-server-2.1.tar.bz2";  executecmd="noexecute" run="norun"; force="noforce"; md5="2527437b46f1b47f20228d27d72395a6"
 	elif [ "${gamename}" == "Wolfenstein: Enemy Territory" ]; then
-		fileurl="http://files.gameservermanagers.com/WolfensteinEnemyTerritory/enemy-territory.260b.tar.bz2"; filedir="${tmpdir}"; filename="enemy-territory.260b.tar.bz2";  executecmd="noexecute" run="norun"; force="noforce"; md5="f833f514bfcdd46b42c111f83350c5a7"
+		if [ "${serverbuild}" == "etlegacy" ]; then
+			fileurl="http://files.gameservermanagers.com/WolfensteinEnemyTerritory/etlegacy-v2.75-i386.tar.gz"; filedir="${tmpdir}"; filename="etlegacy-v2.75-i386.tar.gz";  executecmd="noexecute" run="norun"; force="noforce"; md5="d8fb0edb1b4d5f6a454eae41009d7d94"
+		elif [ "${serverbuild}" == "2.60b" ]; then
+			fileurl="http://files.gameservermanagers.com/WolfensteinEnemyTerritory/enemy-territory.260b.tar.bz2"; filedir="${tmpdir}"; filename="enemy-territory.260b.tar.bz2";  executecmd="noexecute" run="norun"; force="noforce"; md5="f833f514bfcdd46b42c111f83350c5a7"
+		fi
 	fi
 	fn_fetch_file "${fileurl}" "${filedir}" "${filename}" "${executecmd}" "${run}" "${force}" "${md5}"
 	fn_dl_extract "${filedir}" "${filename}" "${filesdir}"

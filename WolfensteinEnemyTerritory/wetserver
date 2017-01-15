@@ -31,6 +31,11 @@ fn_parms(){
 	parms="+set net_strict 1 +set fs_homepath ${filesdir} +exec ${servercfg}"
 }
 
+## Server Build
+# Recommended: etlegacy | https://www.etlegacy.com
+# Official: 2.60b | http://www.splashdamage.com/content/download-wolfenstein-enemy-territory
+serverbuild="etlegacy"
+
 #### LinuxGSM Settings ####
 
 ## Notification Alerts
