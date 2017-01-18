@@ -80,6 +80,9 @@ fn_install_server_files_steamcmd(){
 				if [ "${engine}" == "goldsource" ]; then
 					${unbuffer} ./steamcmd.sh +login "${steamuser}" "${steampass}" +force_install_dir "${filesdir}" +app_set_config 90 mod "${appidmod}" +app_update "${appid}" ${branch} +quit
 					local exitcode=$?
+				elif [ "${gamename}" == "Unturned" ]; then
+					${unbuffer} ./steamcmd.sh +@sSteamCmdForcePlatformBitness 32 +login "${steamuser}" "${steampass}" +force_install_dir "${filesdir}" +app_update "${appid}" ${branch} +quit
+					local exitcode=$?					
 				else
 					${unbuffer} ./steamcmd.sh +login "${steamuser}" "${steampass}" +force_install_dir "${filesdir}" +app_update "${appid}" ${branch} +quit
 					local exitcode=$?
@@ -88,6 +91,9 @@ fn_install_server_files_steamcmd(){
 				if [ "${engine}" == "goldsource" ]; then
 					${unbuffer} ./steamcmd.sh +login "${steamuser}" "${steampass}" +force_install_dir "${filesdir}" +app_set_config 90 mod "${appidmod}" +app_update "${appid}" ${branch} -validate +quit
 					local exitcode=$?
+				elif [ "${gamename}" == "Unturned" ]; then
+					${unbuffer} ./steamcmd.sh +@sSteamCmdForcePlatformBitness 32 +login "${steamuser}" "${steampass}" +force_install_dir "${filesdir}" +app_update "${appid}" ${branch} -validate +quit
+					local exitcode=$?						
 				else
 					${unbuffer} ./steamcmd.sh +login "${steamuser}" "${steampass}" +force_install_dir "${filesdir}" +app_update "${appid}" ${branch} -validate +quit
 					local exitcode=$?
