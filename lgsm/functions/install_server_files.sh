@@ -11,6 +11,8 @@ local function_selfname="$(basename $(readlink -f "${BASH_SOURCE[0]}"))"
 fn_install_server_files(){
 	if [ "${gamename}" == "Battlefield: 1942" ]; then
 		fileurl="http://files.gameservermanagers.com/BattleField1942/bf1942_lnxded-1.61-hacked-to-1.612.full.tar.bz2"; filedir="${tmpdir}"; filename="bf1942_lnxded-1.61-hacked-to-1.612.full.tar.bz2";  executecmd="noexecute" run="norun"; force="noforce"; md5="a86a5d3cd64ca59abcc9bb9f777c2e5d"
+	elif [ "${gamename}" == "Battlefield 2" ]; then
+		fileurl="http://download.bf2.us/servers/bf2.linux.server.tar.gz"; filedir="${tmpdir}"; filename="bf2.linux.server.tar.gz";  executecmd="noexecute" run="norun"; force="noforce"; md5="a4e40c338c614658fcbd11d39f9b223d"
 	elif [ "${gamename}" == "Call of Duty" ]; then
 		fileurl="http://files.gameservermanagers.com/CallOfDuty/cod-lnxded-1.5b-full.tar.bz2"; filedir="${tmpdir}"; filename="cod-lnxded-1.5-large.tar.bz2";  executecmd="noexecute" run="norun"; force="noforce"; md5="19629895a4cf6fd8f6d1ee198b5304cd"
 	elif [ "${gamename}" == "Call of Duty: United Offensive" ]; then
