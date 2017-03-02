@@ -82,15 +82,15 @@ lgsmdir="${rootdir}/lgsm"
 functionsdir="${lgsmdir}/functions"
 libdir="${lgsmdir}/lib"
 tmpdir="${lgsmdir}/tmp"
-filesdir="${rootdir}/serverfiles/server"
+filesdir="${rootdir}/serverfiles"
 
 ## Server Specific Directories
-systemdir="${filesdir}"
+systemdir="${filesdir}/server"
 executabledir="${systemdir}"
 executable="./start.sh"
 servercfg="serversettings.con"
 servercfgdefault="serversettings.con"
-servercfgdir="${systemdir}/mods/bf1942/settings"
+servercfgdir="${systemdir}/mods/bf2/settings"
 servercfgfullpath="${servercfgdir}/${servercfg}"
 
 ## Backup Directory

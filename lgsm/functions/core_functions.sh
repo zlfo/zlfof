@@ -354,6 +354,11 @@ functionfile="${FUNCNAME}"
 fn_fetch_function
 }
 
+fix_bf2.sh(){
+functionfile="${FUNCNAME}"
+fn_fetch_function
+}
+
 fix_csgo.sh(){
 functionfile="${FUNCNAME}"
 fn_fetch_function

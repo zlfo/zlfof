@@ -62,7 +62,14 @@ fi
 
 # Fixes that are run on install only.
 if [ "${function_selfname}" == "command_install.sh" ]; then
-	if [ "${gamename}" == "Killing Floor" ]; then
+	if [ "${gamename}" == "Battlefield 2" ]; then
+		echo ""
+		echo "Applying ${gamename} Server Fixes"
+		echo "================================="
+		sleep 1
+		fix_bf2.sh
+	fi
+	elif [ "${gamename}" == "Killing Floor" ]; then
 		echo ""
 		echo "Applying ${gamename} Server Fixes"
 		echo "================================="
