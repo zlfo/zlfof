@@ -68,7 +68,6 @@ if [ "${function_selfname}" == "command_install.sh" ]; then
 		echo "================================="
 		sleep 1
 		fix_bf2.sh
-	fi
 	elif [ "${gamename}" == "Killing Floor" ]; then
 		echo ""
 		echo "Applying ${gamename} Server Fixes"
