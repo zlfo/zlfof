@@ -1,5 +1,5 @@
 #!/bin/bash
-# LGSM install_server_files.sh function
+# LinuxGSM install_server_files.sh function
 # Author: Daniel Gibbs
 # Website: https://gameservermanagers.com
 # Description: Installs server files.
@@ -34,7 +34,7 @@ fn_install_server_files(){
 	elif [ "${gamename}" == "Unreal Tournament 99" ]; then
 		fileurl="http://files.gameservermanagers.com/UnrealTournament99/ut99-server-451-ultimate-linux.tar.bz2"; filedir="${tmpdir}"; filename="ut99-server-451-ultimate-linux.tar.bz2"; executecmd="noexecute" run="norun"; force="noforce"; md5="49cb24d0550ff6ddeaba6007045c6edd"
 	elif [ "${gamename}" == "Unreal Tournament" ]; then
-		fileurl="http://files.gameservermanagers.com/UnrealTournament/UnrealTournament-Server-XAN-3193528-Linux.zip"; filedir="${tmpdir}"; filename="UnrealTournament-Server-XAN-3193528-Linux.zip";  executecmd="noexecute" run="norun"; force="noforce"; md5="e3dd5853c4eb193674d5c832f60040d8"
+		fileurl="https://s3.amazonaws.com/unrealtournament/UnrealTournament-Server-XAN-3270765-Linux.zip"; filedir="${tmpdir}"; filename="UnrealTournament-Server-XAN-3270765-Linux.zip";  executecmd="noexecute" run="norun"; force="noforce"; md5="8791dc087383061d7f7f9f523237b8b3"
 	elif [ "${gamename}" == "Unreal Tournament 3" ]; then
 		fileurl="http://files.gameservermanagers.com/UnrealTournament3/UT3-linux-server-2.1.tar.bz2"; filedir="${tmpdir}"; filename="UT3-linux-server-2.1.tar.bz2";  executecmd="noexecute" run="norun"; force="noforce"; md5="2527437b46f1b47f20228d27d72395a6"
 	elif [ "${gamename}" == "Wolfenstein: Enemy Territory" ]; then
@@ -135,6 +135,8 @@ elif [ "${gamename}" == "Minecraft" ]; then
 	update_minecraft.sh
 elif [ "${gamename}" == "Mumble" ]; then
 	update_mumble.sh
+elif [ "${gamename}" == "Multi Theft Auto" ]; then
+	update_mta.sh
 elif [ "${gamename}" == "Factorio" ]; then
   update_factorio.sh
   install_factorio_save.sh
@@ -148,12 +150,7 @@ fi
 if [ -z "${autoinstall}" ]; then
 	echo ""
 	echo "================================="
-	while true; do
-	read -e -i "y" -p "Was the install successful? [Y/n]" yn
-		case $yn in
-			[Yy]* ) break;;
-			[Nn]* ) install_retry.sh;;
-			* ) echo "Please answer yes or no.";;
-		esac
-	done
+	if ! fn_prompt_yn "Was the install successful?" Y; then
+		install_retry.sh
+	fi
 fi

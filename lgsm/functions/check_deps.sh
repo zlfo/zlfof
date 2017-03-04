@@ -1,12 +1,10 @@
 #!/bin/bash
-# LGSM check_deps.sh function
+# LinuxGSM check_deps.sh function
 # Author: Daniel Gibbs
 # Website: https://gameservermanagers.com
-# Description: Checks if required dependencies are installed for LGSM.
+# Description: Checks if required dependencies are installed for LinuxGSM.
 
 local commandname="CHECK"
-
-
 
 fn_deps_detector(){
 	# Checks if dependency is missing
@@ -78,7 +76,7 @@ fn_found_missing_deps(){
 		fn_print_dots "Checking dependencies"
 		sleep 0.5
 		fn_print_error_nl "Checking dependencies: missing: ${red}${array_deps_missing[@]}${default}"
-		fn_script_log_error "Checking dependencies: missing: ${red}${array_deps_missing[@]}${default}"
+		fn_script_log_error "Checking dependencies: missing: ${array_deps_missing[@]}"
 		sleep 1
 		sudo -v > /dev/null 2>&1
 		if [ $? -eq 0 ]; then
@@ -146,7 +144,7 @@ if [ -n "$(command -v dpkg-query)" ]; then
 	# Generate array of missing deps
 	array_deps_missing=()
 
-	# LGSM requirements
+	# LinuxGSM requirements
 	array_deps_required=( curl wget ca-certificates file bsdmainutils util-linux python bzip2 gzip unzip )
 
 	# All servers except ts3 require tmux
@@ -158,8 +156,8 @@ if [ -n "$(command -v dpkg-query)" ]; then
 		fi
 	fi
 
-	# All servers except ts3,mumble and minecraft servers require libstdc++6 and lib32gcc1
-	if [ "${gamename}" != "TeamSpeak 3" ]&&[ "${gamename}" != "Mumble" ]&&[ "${engine}" != "lwjgl2" ]; then
+	# All servers except ts3,mumble,multitheftauto and minecraft servers require libstdc++6 and lib32gcc1
+	if [ "${gamename}" != "TeamSpeak 3" ]&&[ "${gamename}" != "Mumble" ]&&[ "${engine}" != "lwjgl2" ]&&[ "${engine}" != "renderware" ]; then
 		if [ "${arch}" == "x86_64" ]; then
 			array_deps_required+=( lib32gcc1 libstdc++6:i386 )
 		else
@@ -182,8 +180,8 @@ if [ -n "$(command -v dpkg-query)" ]; then
 		else
 			array_deps_required+=( libtinfo5 )
 		fi
-	# Brainbread 2 and Don't Starve Together
-	elif [ "${gamename}" == "Brainbread 2" ]||[ "${gamename}" == "Don't Starve Together" ]; then
+	# Brainbread 2 ,Don't Starve Together & Team Fortress 2
+	elif [ "${gamename}" == "Brainbread 2" ]||[ "${gamename}" == "Don't Starve Together" ]||[ "${gamename}" == "Team Fortress 2" ]; then
 		array_deps_required+=( libcurl4-gnutls-dev:i386 )
 	# Battlefield: 1942
 	elif [ "${gamename}" == "Battlefield: 1942" ]; then
@@ -204,7 +202,7 @@ if [ -n "$(command -v dpkg-query)" ]; then
 		array_deps_required+=( zlib1g:i386 libldap-2.4-2:i386 )
 	# Serious Sam 3: BFE
 	elif [ "${gamename}" ==  "Serious Sam 3: BFE" ]; then
-		array_deps_required+=( libxrandr2:i386 libglu1-mesa:i386 libxtst6:i386 libusb-1.0-0-dev:i386 libxxf86vm1:i386 libopenal1:i386 libssl1.0.0:i386 libgtk2.0-0:i386 libdbus-glib-1-2:i386 libnm-glib-dev:i386 )		
+		array_deps_required+=( libxrandr2:i386 libglu1-mesa:i386 libxtst6:i386 libusb-1.0-0-dev:i386 libxxf86vm1:i386 libopenal1:i386 libssl1.0.0:i386 libgtk2.0-0:i386 libdbus-glib-1-2:i386 libnm-glib-dev:i386 )
 	# Unreal Engine
 	elif [ "${executable}" ==  "./ucc-bin" ]; then
 		#UT2K4
@@ -225,7 +223,7 @@ elif [ -n "$(command -v yum)" ]; then
 	# Generate array of missing deps
 	array_deps_missing=()
 
-	# LGSM requirements
+	# LinuxGSM requirements
 	if [ "${distroversion}" == "6" ]; then
 		array_deps_required=( curl wget util-linux-ng python file gzip bzip2 unzip )
 	else
@@ -241,8 +239,8 @@ elif [ -n "$(command -v yum)" ]; then
 		fi
 	fi
 
-	# All servers except ts3,mumble and minecraft servers require glibc.i686 and libstdc++.i686
-	if [ "${gamename}" != "TeamSpeak 3" ]&&[ "${gamename}" != "Mumble" ]&&[ "${engine}" != "lwjgl2" ]; then
+	# All servers except ts3,mumble,multitheftauto and minecraft servers require glibc.i686 and libstdc++.i686
+	if [ "${gamename}" != "TeamSpeak 3" ]&&[ "${gamename}" != "Mumble" ]&&[ "${engine}" != "lwjgl2" ]&&[ "${engine}" != "renderware" ]; then
 		array_deps_required+=( glibc.i686 libstdc++.i686 )
 	fi
 
@@ -257,8 +255,8 @@ elif [ -n "$(command -v yum)" ]; then
 	# No More Room in Hell, Counter-Strike: Source and Garry's Mod
 	elif [ "${gamename}" == "No More Room in Hell" ]||[ "${gamename}" == "Counter-Strike: Source" ]||[ "${gamename}" == "Garry's Mod" ]; then
 		array_deps_required+=( ncurses-libs.i686 )
-	# Brainbread 2 and Don't Starve Together
-	elif [ "${gamename}" == "Brainbread 2" ]||[ "${gamename}" == "Don't Starve Together" ]; then
+	# Brainbread 2, Don't Starve Together & Team Fortress 2
+	elif [ "${gamename}" == "Brainbread 2" ]||[ "${gamename}" == "Don't Starve Together" ]||[ "${gamename}" == "Team Fortress 2" ]; then
 		array_deps_required+=( libcurl.i686 )
 	# Battlefield: 1942
 	elif [ "${gamename}" == "Battlefield: 1942" ]; then

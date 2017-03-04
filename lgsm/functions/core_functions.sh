@@ -1,5 +1,5 @@
 #!/bin/bash
-# LGSM core_functions.sh function
+# LinuxGSM core_functions.sh function
 # Author: Daniel Gibbs
 # Website: https://gameservermanagers.com
 # Description: Defines all functions to allow download and execution of functions using fn_fetch_function.
@@ -182,6 +182,26 @@ functionfile="${FUNCNAME}"
 fn_fetch_function
 }
 
+command_install_resources_mta.sh(){
+functionfile="${FUNCNAME}"
+fn_fetch_function
+}
+
+command_mods_install.sh(){
+functionfile="${FUNCNAME}"
+fn_fetch_function
+}
+
+command_mods_update.sh(){
+functionfile="${FUNCNAME}"
+fn_fetch_function
+}
+
+command_mods_remove.sh(){
+functionfile="${FUNCNAME}"
+fn_fetch_function
+}
+
 command_fastdl.sh(){
 functionfile="${FUNCNAME}"
 fn_fetch_function
@@ -197,6 +217,10 @@ functionfile="${FUNCNAME}"
 fn_fetch_function
 }
 
+command_wipe.sh(){
+functionfile="${FUNCNAME}"
+fn_fetch_function
+}
 
 # Checks
 
@@ -211,6 +235,11 @@ fn_fetch_function
 }
 
 check_deps.sh(){
+functionfile="${FUNCNAME}"
+fn_fetch_function
+}
+
+check_executable.sh(){
 functionfile="${FUNCNAME}"
 fn_fetch_function
 }
@@ -278,6 +307,17 @@ functionfile="${FUNCNAME}"
 fn_fetch_function
 }
 
+# Mods
+
+mods_list.sh(){
+functionfile="${FUNCNAME}"
+fn_fetch_function
+}
+
+mods_core.sh(){
+functionfile="${FUNCNAME}"
+fn_fetch_function
+}
 
 # Dev
 
@@ -369,6 +409,11 @@ functionfile="${FUNCNAME}"
 fn_fetch_function
 }
 
+fix_mta.sh(){
+functionfile="${FUNCNAME}"
+fn_fetch_function
+}
+
 # Info
 
 info_config.sh(){
@@ -448,6 +493,11 @@ fn_fetch_function
 }
 
 update_mumble.sh(){
+functionfile="${FUNCNAME}"
+fn_fetch_function
+}
+
+update_mta.sh(){
 functionfile="${FUNCNAME}"
 fn_fetch_function
 }

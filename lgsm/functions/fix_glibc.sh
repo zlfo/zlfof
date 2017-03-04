@@ -1,5 +1,5 @@
 #!/bin/bash
-# LGSM fix_glibc.sh function
+# LinuxGSM fix_glibc.sh function
 # Author: Daniel Gibbs
 # Website: https://gameservermanagers.com
 # Description: Downloads required Glibc files and applies the Glibc fix if required.
@@ -46,8 +46,6 @@ do
 	fi
 done
 
-export LD_LIBRARY_PATH=:"${libdir}"
-
 ## amd64
 
 # libm.so.6
@@ -67,3 +65,5 @@ do
 		fn_fetch_file_github "lgsm/lib/ubuntu12.04/amd64" "libc.so.6" "${lgsmdir}/lib" "noexecutecmd" "norun" "noforce" "nomd5"
 	fi
 done
+
+export LD_LIBRARY_PATH=:"${libdir}"

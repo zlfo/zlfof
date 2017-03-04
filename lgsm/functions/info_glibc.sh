@@ -1,12 +1,18 @@
 #!/bin/bash
-# LGSM info_glibc.sh function
+# LinuxGSM info_glibc.sh function
 # Author: Daniel Gibbs
 # Website: https://gameservermanagers.com
 # Description: Stores details on servers Glibc requirements.
 
 local function_selfname="$(basename $(readlink -f "${BASH_SOURCE[0]}"))"
 
-if [ "${gamename}" == "Black Mesa: Deathmatch" ]; then
+if [ "${gamename}" == "ARK: Survival Evolved" ]; then
+	glibcrequired="2.15"
+	glibcfix="no"
+elif [ "${gamename}" == "Ballistic Overkill" ]; then
+	glibcrequired="2.15"
+	glibcfix="yes"
+elif [ "${gamename}" == "Black Mesa: Deathmatch" ]; then
 	glibcrequired="2.15"
 	glibcfix="yes"
 elif [ "${gamename}" == "Blade Symphony" ]; then
@@ -59,6 +65,9 @@ elif [ "${gamename}" == "Mumble" ]; then
 elif [ "${gamename}" == "No More Room in Hell" ]; then
 	glibcrequired="2.15"
 	glibcfix="yes"
+elif [ "${gamename}" == "Project Cars" ]; then
+	glibcrequired="2.4"
+	glibcfix="no"
 elif [ "${gamename}" == "Quake 2" ]; then
 	glibcrequired="NOT REQUIRED"
 	glibcfix="no"
@@ -68,11 +77,14 @@ elif [ "${gamename}" == "Quake 3: Arena" ]; then
 elif [ "${gamename}" == "Quake Live" ]; then
 	glibcrequired="2.15"
 	glibcfix="no"
+elif [ "${gamename}" == "Sven Co-op" ]; then
+	glibcrequired="2.18"
+	glibcfix="no"
 elif [ "${gamename}" == "TeamSpeak 3" ]; then
 	glibcrequired="NOT REQUIRED"
 	glibcfix="no"
 elif [ "${gamename}" == "Teeworlds" ]; then
-	glibcrequired="2.3"
+	glibcrequired="2.14"
 	glibcfix="no"
 elif [ "${engine}" == "avalanche" ]; then
 	glibcrequired="2.13"
@@ -133,6 +145,9 @@ elif [ "${engine}" == "refractor" ]; then
 	glibcfix="no"
 elif [ "${gamename}" == "Wolfenstein: Enemy Territory" ]; then
 	glibcrequired="2.2.4"
+	glibcfix="no"
+elif [ "${gamename}" == "Multi Theft Auto" ]; then
+	glibcrequired="2.7"
 	glibcfix="no"
 else
 	glibcrequired="UNKNOWN"
