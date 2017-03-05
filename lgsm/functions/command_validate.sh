@@ -28,6 +28,8 @@ fn_validation(){
 
 	if [ "${engine}" == "goldsource" ]; then
 		${unbuffer} ./steamcmd.sh +login "${steamuser}" "${steampass}" +force_install_dir "${filesdir}" +app_set_config 90 mod ${appidmod} +app_update "${appid}" ${branch} +app_update "${appid}" ${branch} validate +quit| tee -a "${scriptlog}"
+	elif [ "${gamename}" == "Unturned" ]; then
+		${unbuffer} ./steamcmd.sh ./steamcmd.sh +@sSteamCmdForcePlatformBitness 32 +login "${steamuser}" "${steampass}" +force_install_dir "${filesdir}" +app_set_config 90 mod ${appidmod} +app_update "${appid}" ${branch} +app_update "${appid}" ${branch} validate +quit| tee -a "${scriptlog}"
 	else
 		${unbuffer} ./steamcmd.sh +login "${steamuser}" "${steampass}" +force_install_dir "${filesdir}" +app_update "${appid}" ${branch} validate +quit| tee -a "${scriptlog}"
 	fi
